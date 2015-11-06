@@ -2,6 +2,10 @@
 
 Tiny dependency injection container for small applications. 
 
+## Current build Status
+
+[![Build status](https://ci.appveyor.com/api/projects/status/jwvapw9wrhs6w85e?retina=true)](https://ci.appveyor.com/project/pavel-xrayz13/microdi-net)
+
 ### What? Another IoC container? ###
 
 Yes, this is another IoC container. It facilitates building small and tiny applications and provides developers with the following advantages:
