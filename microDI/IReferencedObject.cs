@@ -23,16 +23,18 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 // OTHER DEALINGS IN THE SOFTWARE.
 
-using System;
-
-namespace microDI.LifeCycle
+namespace microDI
 {
-    public class TransientLifeCyclePolicy : ILifeCyclePolicy
+    /// <summary>
+    /// Proxy object to an registered type in IoC container.
+    /// </summary>
+    public interface IReferencedObject
     {
-        public object Get(
-            IRegistryAccessorService registryAccessorService, IActivationService activationService, Type type)
-        {
-            return activationService.GetInstance(registryAccessorService.GetRegisteredObject(type));
-        }
+        /// <summary>
+        /// Wire some interface or class with already registered type.
+        /// </summary>
+        /// <typeparam name="TInterface">Type if interface to be wired</typeparam>
+        /// <returns>Referenced object of primary object.</returns>
+        IReferencedObject AutoWire<TInterface>();
     }
 }

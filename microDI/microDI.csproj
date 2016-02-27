@@ -34,24 +34,35 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <!-- A reference to the entire .NET Framework is automatically included -->
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Container.cs" />
     <Compile Include="Exceptions\ActivationException.cs" />
     <Compile Include="Exceptions\TypeAlreadyRegisteredException.cs" />
     <Compile Include="Exceptions\TypeNotRegisteredException.cs" />
-    <Compile Include="IActivationFactory.cs" />
+    <Compile Include="IActivationService.cs" />
     <Compile Include="IContainer.cs" />
+    <Compile Include="Internal\AutoWiredRegisteredObject.cs" />
+    <Compile Include="Internal\Extensions\RegisteredObjectExtensions.cs" />
+    <Compile Include="Internal\IInternalRegisteredObject.cs" />
+    <Compile Include="Internal\IObjectRegistryService.cs" />
+    <Compile Include="IRegisteredObject.cs" />
+    <Compile Include="Internal\ReferencedObject.cs" />
+    <Compile Include="Internal\Services\ObjectRegistryService.cs" />
+    <Compile Include="IReferencedObject.cs" />
+    <Compile Include="IRegistryAccessorService.cs" />
     <Compile Include="ILifeCyclePolicy.cs" />
-    <Compile Include="Internal\Assert\Assertions.cs" />
+    <Compile Include="Internal\Assert\RuntimeCheck.cs" />
     <Compile Include="Internal\Assert\CodeAnnotations.cs" />
-    <Compile Include="Internal\ActivationFactory.cs" />
-    <Compile Include="Internal\RegisteredType.cs" />
+    <Compile Include="Internal\Services\ActivationService.cs" />
+    <Compile Include="Internal\RegisteredObject.cs" />
     <Compile Include="LifeCycle\SingletonLifeCyclePolicy.cs" />
     <Compile Include="LifeCycle\ThreadLocalLifeCyclePolicy.cs" />
     <Compile Include="LifeCycle\TransientLifeCyclePolicy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System.Collections.Concurrent">
+      <HintPath>..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETPortable\v4.5\System.Collections.Concurrent.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,67 +1,83 @@
-﻿using System;
-using System.Collections.Generic;
-using microDI.Exceptions;
+﻿// MIT License
+// -----------
+//
+// Copyright(c) 2016 Pavel Umnikov
+// Permission is hereby granted, free of charge, to any person
+// obtaining a copy of this software and associated documentation
+// files (the "Software"), to deal in the Software without
+// restriction, including without limitation the rights to use,
+// copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the
+// Software is furnished to do so, subject to the following
+// conditions:
+//
+// The above copyright notice and this permission notice shall be
+// included in all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+// OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+// NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+// HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+// WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+// FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+// OTHER DEALINGS IN THE SOFTWARE.
+
+using System;
 using microDI.Internal;
 using microDI.Internal.Assert;
+using microDI.Internal.Services;
 
 namespace microDI
 {
-    public class Container : IContainer
+    public sealed class Container : IContainer
     {
-        private readonly ActivationFactory _activationFactory;
-        private readonly Dictionary<Type, RegisteredType> _typeRegistery;
+        private readonly ActivationService _activationService;
+        private readonly ObjectRegistryService _registryService;
 
         public Container()
         {
-            _activationFactory = new ActivationFactory(this);
-            _typeRegistery = new Dictionary<Type, RegisteredType>();
+            _registryService = new ObjectRegistryService();
+            _activationService = new ActivationService(this);
         }
 
-        public void RegisterAs<TInterface, TImplementation>(ILifeCyclePolicy lifeCycle)
+        public IReferencedObject RegisterAs<TInterface, TImplementation>(ILifeCyclePolicy lifeCycle)
             where TImplementation : TInterface
         {
-            Assertions.NotNull(lifeCycle, "lifeCycle");
+            RuntimeCheck.NotNull(lifeCycle, nameof(lifeCycle));
 
-            var registeringType = typeof (TInterface);
-
-            if (_typeRegistery.ContainsKey(registeringType))
-                throw new TypeAlreadyRegisteredException(registeringType.Name);
-
-            _typeRegistery.Add(registeringType, 
-                new RegisteredType(null, typeof (TImplementation), lifeCycle));
+            return _registryService.Register(
+                typeof(TInterface), new RegisteredObject(null, typeof(TImplementation), lifeCycle));
         }
 
-        public void RegisterAs<TInterface, TImplementation>(
+        public IReferencedObject RegisterAs<TInterface, TImplementation>(
             Func<IContainer, TImplementation> instanceCreatorFunc,
             ILifeCyclePolicy lifeCycle)
             where TImplementation : TInterface
         {
-            var interfaceType = typeof(TInterface);
+            RuntimeCheck.NotNull(instanceCreatorFunc, nameof(instanceCreatorFunc));
+            RuntimeCheck.NotNull(lifeCycle, nameof(lifeCycle));
 
-            if (_typeRegistery.ContainsKey(interfaceType))
-                throw new TypeAlreadyRegisteredException(interfaceType.Name);
-
-            _typeRegistery.Add(interfaceType,
-                new RegisteredType(c => instanceCreatorFunc(c), typeof(TImplementation), lifeCycle));
+            return _registryService.Register(
+                typeof(TInterface), new RegisteredObject(
+                    c => instanceCreatorFunc(c), typeof(TImplementation), lifeCycle));
         }
 
-        public void Register<TClass>(Func<IContainer, TClass> instanceCreatorFunc, ILifeCyclePolicy lifeCycle)
+        public IReferencedObject Register<TClass>(
+            Func<IContainer, TClass> instanceCreatorFunc, ILifeCyclePolicy lifeCycle)
         {
-            Assertions.NotNull(instanceCreatorFunc, "instanceCreatorFunc");
-            Assertions.NotNull(lifeCycle, "lifeCycle");
+            RuntimeCheck.NotNull(instanceCreatorFunc, nameof(instanceCreatorFunc));
+            RuntimeCheck.NotNull(lifeCycle, nameof(lifeCycle));
 
             var registeringType = typeof(TClass);
 
-            if (_typeRegistery.ContainsKey(registeringType))
-                throw new TypeAlreadyRegisteredException(registeringType.Name);
-
-            _typeRegistery.Add(registeringType,
-                new RegisteredType(c => instanceCreatorFunc(c), registeringType, lifeCycle));
+            return _registryService.Register(
+                registeringType, new RegisteredObject(c => instanceCreatorFunc(c), registeringType, lifeCycle));
         }
 
         public object Resolve(Type resolveType)
         {
-            return GetInstance(resolveType);
+            return _activationService.GetInstance(_registryService.GetRegisteredObject(resolveType));
         }
 
         public TInterface Resolve<TInterface>()
@@ -69,14 +85,9 @@ namespace microDI
             return (TInterface)Resolve(typeof(TInterface));
         }
 
-        private object GetInstance(Type interfaceType)
+        public IReferencedObject GetReferencedType<TClass>()
         {
-            RegisteredType registeredType;
-
-            if (!_typeRegistery.TryGetValue(interfaceType, out registeredType))
-                throw new TypeNotRegisteredException(interfaceType.Name);
-
-            return registeredType.LifeCycle.Get(_activationFactory, registeredType);
+            return new ReferencedObject(_registryService.GetRegisteredObject(typeof(TClass)), _registryService);
         }
     }
 }

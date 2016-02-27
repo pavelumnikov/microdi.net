@@ -25,14 +25,11 @@
 
 using System;
 
-namespace microDI.LifeCycle
+namespace microDI
 {
-    public class TransientLifeCyclePolicy : ILifeCyclePolicy
+    public interface IRegisteredObject
     {
-        public object Get(
-            IRegistryAccessorService registryAccessorService, IActivationService activationService, Type type)
-        {
-            return activationService.GetInstance(registryAccessorService.GetRegisteredObject(type));
-        }
+        Type Type { get; }
+        ILifeCyclePolicy LifeCycle { get; }
     }
 }

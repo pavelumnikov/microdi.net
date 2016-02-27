@@ -24,15 +24,32 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 
 using System;
+using System.Collections.Concurrent;
+using microDI.Exceptions;
 
-namespace microDI.LifeCycle
+namespace microDI.Internal.Services
 {
-    public class TransientLifeCyclePolicy : ILifeCyclePolicy
+    internal class ObjectRegistryService : IObjectRegistryService
     {
-        public object Get(
-            IRegistryAccessorService registryAccessorService, IActivationService activationService, Type type)
+        private readonly ConcurrentDictionary<Type, IRegisteredObject> _typeRegistery =
+            new ConcurrentDictionary<Type, IRegisteredObject>();
+
+        public IReferencedObject Register(Type type, IRegisteredObject registeredObjectEntry)
         {
-            return activationService.GetInstance(registryAccessorService.GetRegisteredObject(type));
+            if (!_typeRegistery.TryAdd(type, registeredObjectEntry))
+                throw new TypeAlreadyRegisteredException(type);
+
+            return new ReferencedObject(registeredObjectEntry, this);
+        }
+
+        public IRegisteredObject GetRegisteredObject(Type type)
+        {
+            IRegisteredObject registeredObject;
+
+            if (!_typeRegistery.TryGetValue(type, out registeredObject))
+                throw new TypeNotRegisteredException(type);
+
+            return registeredObject;
         }
     }
 }

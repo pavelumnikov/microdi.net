@@ -23,16 +23,21 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 // OTHER DEALINGS IN THE SOFTWARE.
 
-using System;
+using JetBrains.Annotations;
 
-namespace microDI.LifeCycle
+namespace microDI
 {
-    public class TransientLifeCyclePolicy : ILifeCyclePolicy
+    /// <summary>
+    /// <c>ActivationFactory</c> is an interface for instance creator. It doesn't depend on
+    /// any life cycle policy, it just creates new instance of an <c>object</c> by known type.
+    ///  </summary>
+    public interface IActivationService
     {
-        public object Get(
-            IRegistryAccessorService registryAccessorService, IActivationService activationService, Type type)
-        {
-            return activationService.GetInstance(registryAccessorService.GetRegisteredObject(type));
-        }
+        /// <summary>
+        /// Creates new instance of type from registered type in IoC.
+        /// </summary>
+        /// <param name="registeredObject">Instance of sidecar for registered type.</param>
+        /// <returns>New instance of an typed object.</returns>
+        object GetInstance([NotNull] IRegisteredObject registeredObject);
     }
 }

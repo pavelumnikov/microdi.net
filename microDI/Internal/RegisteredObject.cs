@@ -24,15 +24,26 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 
 using System;
+using JetBrains.Annotations;
 
-namespace microDI.LifeCycle
+namespace microDI.Internal
 {
-    public class TransientLifeCyclePolicy : ILifeCyclePolicy
+    internal class RegisteredObject : IRegisteredObject
     {
-        public object Get(
-            IRegistryAccessorService registryAccessorService, IActivationService activationService, Type type)
+        public Type Type { get; }
+
+        public ILifeCyclePolicy LifeCycle { get; }
+        public Func<IContainer, object> OverridenInstanceCreatorFunction { get; }
+        public bool HasCustomizedCreatorFunction => OverridenInstanceCreatorFunction != null;
+
+        public RegisteredObject(
+            [CanBeNull] Func<IContainer, object> createInstanceFunc,
+            [NotNull] Type registedType,
+            [NotNull] ILifeCyclePolicy lifeCycle)
         {
-            return activationService.GetInstance(registryAccessorService.GetRegisteredObject(type));
+            OverridenInstanceCreatorFunction = createInstanceFunc;
+            Type = registedType;
+            LifeCycle = lifeCycle;
         }
     }
 }

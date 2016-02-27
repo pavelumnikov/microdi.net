@@ -23,16 +23,29 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 // OTHER DEALINGS IN THE SOFTWARE.
 
-using System;
+using JetBrains.Annotations;
+using microDI.Internal.Assert;
 
-namespace microDI.LifeCycle
+namespace microDI.Internal
 {
-    public class TransientLifeCyclePolicy : ILifeCyclePolicy
+    internal class ReferencedObject : IReferencedObject
     {
-        public object Get(
-            IRegistryAccessorService registryAccessorService, IActivationService activationService, Type type)
+        private readonly IRegisteredObject _registeredObject;
+        private readonly IObjectRegistryService _registryService;
+
+        public ReferencedObject(
+            [NotNull] IRegisteredObject registeredObject, 
+            [NotNull] IObjectRegistryService registryService)
         {
-            return activationService.GetInstance(registryAccessorService.GetRegisteredObject(type));
+            _registeredObject = RuntimeCheck.NotNull(registeredObject, nameof(registeredObject));
+            _registryService = RuntimeCheck.NotNull(registryService, nameof(registryService));
+        }
+
+        public IReferencedObject AutoWire<TInterface>()
+        {
+            var registerType = typeof (TInterface);
+            _registryService.Register(registerType, new AutoWiredRegisteredObject(registerType, _registeredObject));
+            return this;
         }
     }
 }

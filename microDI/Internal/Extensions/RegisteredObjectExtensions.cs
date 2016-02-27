@@ -25,14 +25,20 @@
 
 using System;
 
-namespace microDI.LifeCycle
+namespace microDI.Internal.Extensions
 {
-    public class TransientLifeCyclePolicy : ILifeCyclePolicy
+    internal static class RegisteredObjectExtensions
     {
-        public object Get(
-            IRegistryAccessorService registryAccessorService, IActivationService activationService, Type type)
+        public static IInternalRegisteredObject AsInternal(this IRegisteredObject source)
         {
-            return activationService.GetInstance(registryAccessorService.GetRegisteredObject(type));
+            if(source == null)
+                throw new ArgumentNullException(nameof(source));
+
+            var result = source as IInternalRegisteredObject;
+            if(result == null)
+                throw new InvalidCastException("Cannot cast IRegisteredObject as internal reprentation!");
+
+            return result;
         }
     }
 }

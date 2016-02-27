@@ -25,14 +25,11 @@
 
 using System;
 
-namespace microDI.LifeCycle
+namespace microDI.Internal
 {
-    public class TransientLifeCyclePolicy : ILifeCyclePolicy
+    internal interface IInternalRegisteredObject : IRegisteredObject
     {
-        public object Get(
-            IRegistryAccessorService registryAccessorService, IActivationService activationService, Type type)
-        {
-            return activationService.GetInstance(registryAccessorService.GetRegisteredObject(type));
-        }
+        Func<IContainer, object> OverridenInstanceCreatorFunction { get; }
+        bool HasCustomizedCreatorFunction { get; }
     }
 }

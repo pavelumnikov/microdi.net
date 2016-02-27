@@ -24,15 +24,12 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 
 using System;
+using JetBrains.Annotations;
 
-namespace microDI.LifeCycle
+namespace microDI.Internal
 {
-    public class TransientLifeCyclePolicy : ILifeCyclePolicy
+    internal interface IObjectRegistryService : IRegistryAccessorService
     {
-        public object Get(
-            IRegistryAccessorService registryAccessorService, IActivationService activationService, Type type)
-        {
-            return activationService.GetInstance(registryAccessorService.GetRegisteredObject(type));
-        }
+        IReferencedObject Register([NotNull] Type type, [NotNull] IRegisteredObject registeredObjectEntry);
     }
 }
