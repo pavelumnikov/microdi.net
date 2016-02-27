@@ -27,6 +27,9 @@ using System;
 
 namespace microDI.LifeCycle
 {
+    /// <summary>
+    /// Life cycle policy that describes object behaviour as singleton object.
+    /// </summary>
     public class SingletonLifeCyclePolicy : ILifeCyclePolicy
     {
         private object _value;

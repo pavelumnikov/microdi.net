@@ -30,6 +30,7 @@ namespace microDI.Exceptions
     /// <summary>
     /// The standard exception thrown when an activation service has an error of resolving an object.
     /// </summary>
+    /// <see cref="Exception"/>
     public class ActivationException : Exception
     {
         /// <summary>

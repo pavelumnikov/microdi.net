@@ -27,6 +27,10 @@ using System;
 
 namespace microDI.LifeCycle
 {
+    /// <summary>
+    /// Life cycle policy that describes object behaviour as transient object, meaning
+    /// it will be created every time you ask container to resolve object.
+    /// </summary>
     public class TransientLifeCyclePolicy : ILifeCyclePolicy
     {
         public object Get(

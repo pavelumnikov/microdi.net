@@ -35,6 +35,7 @@ namespace microDI
         /// </summary>
         /// <typeparam name="TInterface">Type if interface to be wired</typeparam>
         /// <returns>Referenced object of primary object.</returns>
+        /// <see cref="IReferencedObject"/>
         IReferencedObject AutoWire<TInterface>();
     }
 }

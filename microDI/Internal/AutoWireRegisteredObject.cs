@@ -30,7 +30,7 @@ using microDI.Internal.Extensions;
 
 namespace microDI.Internal
 {
-    internal class AutoWiredRegisteredObject : IInternalRegisteredObject
+    internal class AutoWireRegisteredObject : IInternalRegisteredObject
     {
         private readonly IInternalRegisteredObject _registeredObject;
 
@@ -42,7 +42,7 @@ namespace microDI.Internal
 
         public bool HasCustomizedCreatorFunction => _registeredObject.HasCustomizedCreatorFunction;
 
-        public AutoWiredRegisteredObject([NotNull] Type type, [NotNull] IRegisteredObject registeredObject)
+        public AutoWireRegisteredObject([NotNull] Type type, [NotNull] IRegisteredObject registeredObject)
         {
             Type = RuntimeCheck.NotNull(type, nameof(type));
             _registeredObject = RuntimeCheck.NotNull(registeredObject, nameof(registeredObject)).AsInternal();

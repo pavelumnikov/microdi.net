@@ -40,7 +40,7 @@
     <Compile Include="Exceptions\TypeNotRegisteredException.cs" />
     <Compile Include="IActivationService.cs" />
     <Compile Include="IContainer.cs" />
-    <Compile Include="Internal\AutoWiredRegisteredObject.cs" />
+    <Compile Include="Internal\AutoWireRegisteredObject.cs" />
     <Compile Include="Internal\Extensions\RegisteredObjectExtensions.cs" />
     <Compile Include="Internal\IInternalRegisteredObject.cs" />
     <Compile Include="Internal\IObjectRegistryService.cs" />

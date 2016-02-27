@@ -28,6 +28,10 @@ using System.Threading;
 
 namespace microDI.LifeCycle
 {
+    /// <summary>
+    /// Life cycle policy that describes object behaviour as singleton object but with
+    /// thread-local visibility.
+    /// </summary>
     public class ThreadLocalLifeCyclePolicy : ILifeCyclePolicy
     {
         private readonly ThreadLocal<object> _threadLocalValue = new ThreadLocal<object>(); 

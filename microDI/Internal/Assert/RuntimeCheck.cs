@@ -100,12 +100,13 @@ namespace microDI.Internal.Assert
         }
 
         /// <summary>
-        /// Checks 
+        /// Checks is expression is fine. Looks like cplusplus-style assertions, but with
+        /// more control over checking.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="value"></param>
-        /// <param name="prediction"></param>
-        /// <param name="paramName"></param>
+        /// <typeparam name="T">Type of object to be checked.</typeparam>
+        /// <param name="value">Value to be checked</param>
+        /// <param name="prediction">Prediction to check.</param>
+        /// <param name="paramName">Name of parameter, variable or argument.</param>
         /// <returns>Result of expression execution.</returns>
         [AssertionMethod]
         [ContractAnnotation("prediction: false => halt")]
@@ -114,7 +115,7 @@ namespace microDI.Internal.Assert
             [AssertionCondition(AssertionConditionType.IsNull), NotNull] Func<T, bool> prediction,
             [InvokerParameterName, NotNull] string paramName)
         {
-            NotNull(prediction, "prediction");
+            NotNull(prediction, nameof(prediction));
 
             if (prediction.Invoke(value))
                 return value;
@@ -123,15 +124,16 @@ namespace microDI.Internal.Assert
         }
 
         /// <summary>
-        /// 
+        /// Checks is expression is fine. Looks like cplusplus-style assertions, but with
+        /// more control over checking.
         /// </summary>
-        /// <param name="prediction"></param>
+        /// <param name="prediction">Prediction to check.</param>
         [AssertionMethod]
         [ContractAnnotation("prediction: false => halt")]
         public static void Expression(
             [AssertionCondition(AssertionConditionType.IsNull), NotNull] Func<bool> prediction)
         {
-            NotNull(prediction, "prediction");
+            NotNull(prediction, nameof(prediction));
 
             if (!prediction.Invoke())
                 throw new Exception("prediction is not true!");

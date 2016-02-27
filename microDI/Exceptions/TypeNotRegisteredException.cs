@@ -31,6 +31,7 @@ namespace microDI.Exceptions
     /// The standard exception thrown when an registry service has an error on trying to get
     /// information about type that is associated with type-object.
     /// </summary>
+    /// <see cref="Exception"/>
     public class TypeNotRegisteredException : Exception
     {
         /// <summary>

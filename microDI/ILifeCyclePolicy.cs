@@ -37,9 +37,13 @@ namespace microDI
         /// Get value of object that is constructed with this policy and also will be tracked
         /// by this policy(in case of IDisposable object).
         /// </summary>
+        /// <param name="registryAccessorService">Registry of registered types.</param>
+        /// <param name="activationService">Service to activate object.</param>
+        /// <param name="type">Type of object.</param>
         /// <returns>Resulting value of object.</returns>
-        /// <seealso cref="IRegistryAccessorService"/>
-        /// <seealso cref="IActivationService"/>
+        /// <see cref="IRegistryAccessorService"/>
+        /// <see cref="IActivationService"/>
+        /// <seealso cref="IRegisteredObject"/>
         [NotNull] object Get(
             [NotNull] IRegistryAccessorService registryAccessorService,
             [NotNull] IActivationService activationService, 

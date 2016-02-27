@@ -44,7 +44,7 @@ namespace microDI.Internal
         public IReferencedObject AutoWire<TInterface>()
         {
             var registerType = typeof (TInterface);
-            _registryService.Register(registerType, new AutoWiredRegisteredObject(registerType, _registeredObject));
+            _registryService.Register(registerType, new AutoWireRegisteredObject(registerType, _registeredObject));
             return this;
         }
     }

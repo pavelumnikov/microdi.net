@@ -30,6 +30,11 @@ namespace microDI
     public interface IRegisteredObject
     {
         Type Type { get; }
+
+        /// <summary>
+        /// Life cycle policy associated with this registered object
+        /// </summary>
+        /// <see cref="ILifeCyclePolicy"/>
         ILifeCyclePolicy LifeCycle { get; }
     }
 }

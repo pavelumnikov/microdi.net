@@ -28,7 +28,7 @@ using JetBrains.Annotations;
 namespace microDI
 {
     /// <summary>
-    /// <c>ActivationFactory</c> is an interface for instance creator. It doesn't depend on
+    /// <c>ActivationFactory</c> is an interface for instance creation. It doesn't depend on
     /// any life cycle policy, it just creates new instance of an <c>object</c> by known type.
     ///  </summary>
     public interface IActivationService
@@ -38,6 +38,7 @@ namespace microDI
         /// </summary>
         /// <param name="registeredObject">Instance of sidecar for registered type.</param>
         /// <returns>New instance of an typed object.</returns>
+        /// <see cref="IRegisteredObject"/>
         object GetInstance([NotNull] IRegisteredObject registeredObject);
     }
 }

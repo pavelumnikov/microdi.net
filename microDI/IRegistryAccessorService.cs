@@ -28,6 +28,9 @@ using JetBrains.Annotations;
 
 namespace microDI
 {
+    /// <summary>
+    /// Public interface to access all registered type-objects.
+    /// </summary>
     public interface IRegistryAccessorService
     {
         /// <summary>
@@ -35,7 +38,7 @@ namespace microDI
         /// </summary>
         /// <param name="type"></param>
         /// <returns>Instance of registered type-object.</returns>
-        /// <seealso cref="IRegisteredObject"/>
+        /// <see cref="IRegisteredObject"/>
         [NotNull] IRegisteredObject GetRegisteredObject([NotNull] Type type);
     }
 }
