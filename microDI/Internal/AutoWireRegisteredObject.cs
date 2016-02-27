@@ -25,28 +25,27 @@
 
 using System;
 using JetBrains.Annotations;
+using microDI.Internal.Assert;
+using microDI.Internal.Extensions;
 
-namespace microDI
+namespace microDI.Internal
 {
-    /// <summary>
-    /// Basic interface for every policy to be created.
-    /// </summary>
-    public interface ILifeCyclePolicy
+    internal class AutoWireRegisteredObject : IInternalRegisteredObject
     {
-        /// <summary>
-        /// Get value of object that is constructed with this policy and also will be tracked
-        /// by this policy(in case of IDisposable object).
-        /// </summary>
-        /// <param name="registryAccessorService">Registry of registered types.</param>
-        /// <param name="activationService">Service to activate object.</param>
-        /// <param name="type">Type of object.</param>
-        /// <returns>Resulting value of object.</returns>
-        /// <see cref="IRegistryAccessorService"/>
-        /// <see cref="IActivationService"/>
-        /// <seealso cref="IRegisteredObject"/>
-        [NotNull] object Get(
-            [NotNull] IRegistryAccessorService registryAccessorService,
-            [NotNull] IActivationService activationService, 
-            [NotNull] Type type);
+        private readonly IInternalRegisteredObject _registeredObject;
+
+        public Type Type { get; }
+        public ILifeCyclePolicy LifeCycle => _registeredObject.LifeCycle;
+
+        public Func<IContainer, object> OverridenInstanceCreatorFunction
+            => _registeredObject.OverridenInstanceCreatorFunction;
+
+        public bool HasCustomizedCreatorFunction => _registeredObject.HasCustomizedCreatorFunction;
+
+        public AutoWireRegisteredObject([NotNull] Type type, [NotNull] IRegisteredObject registeredObject)
+        {
+            Type = RuntimeCheck.NotNull(type, nameof(type));
+            _registeredObject = RuntimeCheck.NotNull(registeredObject, nameof(registeredObject)).AsInternal();
+        }
     }
 }

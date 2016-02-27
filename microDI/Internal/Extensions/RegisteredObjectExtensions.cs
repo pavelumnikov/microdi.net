@@ -24,29 +24,21 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 
 using System;
-using JetBrains.Annotations;
 
-namespace microDI
+namespace microDI.Internal.Extensions
 {
-    /// <summary>
-    /// Basic interface for every policy to be created.
-    /// </summary>
-    public interface ILifeCyclePolicy
+    internal static class RegisteredObjectExtensions
     {
-        /// <summary>
-        /// Get value of object that is constructed with this policy and also will be tracked
-        /// by this policy(in case of IDisposable object).
-        /// </summary>
-        /// <param name="registryAccessorService">Registry of registered types.</param>
-        /// <param name="activationService">Service to activate object.</param>
-        /// <param name="type">Type of object.</param>
-        /// <returns>Resulting value of object.</returns>
-        /// <see cref="IRegistryAccessorService"/>
-        /// <see cref="IActivationService"/>
-        /// <seealso cref="IRegisteredObject"/>
-        [NotNull] object Get(
-            [NotNull] IRegistryAccessorService registryAccessorService,
-            [NotNull] IActivationService activationService, 
-            [NotNull] Type type);
+        public static IInternalRegisteredObject AsInternal(this IRegisteredObject source)
+        {
+            if(source == null)
+                throw new ArgumentNullException(nameof(source));
+
+            var result = source as IInternalRegisteredObject;
+            if(result == null)
+                throw new InvalidCastException("Cannot cast IRegisteredObject as internal reprentation!");
+
+            return result;
+        }
     }
 }

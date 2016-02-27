@@ -23,30 +23,22 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 // OTHER DEALINGS IN THE SOFTWARE.
 
-using System;
 using JetBrains.Annotations;
 
 namespace microDI
 {
     /// <summary>
-    /// Basic interface for every policy to be created.
-    /// </summary>
-    public interface ILifeCyclePolicy
+    /// <c>ActivationFactory</c> is an interface for instance creation. It doesn't depend on
+    /// any life cycle policy, it just creates new instance of an <c>object</c> by known type.
+    ///  </summary>
+    public interface IActivationService
     {
         /// <summary>
-        /// Get value of object that is constructed with this policy and also will be tracked
-        /// by this policy(in case of IDisposable object).
+        /// Creates new instance of type from registered type in IoC.
         /// </summary>
-        /// <param name="registryAccessorService">Registry of registered types.</param>
-        /// <param name="activationService">Service to activate object.</param>
-        /// <param name="type">Type of object.</param>
-        /// <returns>Resulting value of object.</returns>
-        /// <see cref="IRegistryAccessorService"/>
-        /// <see cref="IActivationService"/>
-        /// <seealso cref="IRegisteredObject"/>
-        [NotNull] object Get(
-            [NotNull] IRegistryAccessorService registryAccessorService,
-            [NotNull] IActivationService activationService, 
-            [NotNull] Type type);
+        /// <param name="registeredObject">Instance of sidecar for registered type.</param>
+        /// <returns>New instance of an typed object.</returns>
+        /// <see cref="IRegisteredObject"/>
+        object GetInstance([NotNull] IRegisteredObject registeredObject);
     }
 }

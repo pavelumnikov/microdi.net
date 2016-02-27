@@ -26,27 +26,10 @@
 using System;
 using JetBrains.Annotations;
 
-namespace microDI
+namespace microDI.Internal
 {
-    /// <summary>
-    /// Basic interface for every policy to be created.
-    /// </summary>
-    public interface ILifeCyclePolicy
+    internal interface IObjectRegistryService : IRegistryAccessorService
     {
-        /// <summary>
-        /// Get value of object that is constructed with this policy and also will be tracked
-        /// by this policy(in case of IDisposable object).
-        /// </summary>
-        /// <param name="registryAccessorService">Registry of registered types.</param>
-        /// <param name="activationService">Service to activate object.</param>
-        /// <param name="type">Type of object.</param>
-        /// <returns>Resulting value of object.</returns>
-        /// <see cref="IRegistryAccessorService"/>
-        /// <see cref="IActivationService"/>
-        /// <seealso cref="IRegisteredObject"/>
-        [NotNull] object Get(
-            [NotNull] IRegistryAccessorService registryAccessorService,
-            [NotNull] IActivationService activationService, 
-            [NotNull] Type type);
+        IReferencedObject Register([NotNull] Type type, [NotNull] IRegisteredObject registeredObjectEntry);
     }
 }

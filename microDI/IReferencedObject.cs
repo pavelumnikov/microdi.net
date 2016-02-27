@@ -23,30 +23,19 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 // OTHER DEALINGS IN THE SOFTWARE.
 
-using System;
-using JetBrains.Annotations;
-
 namespace microDI
 {
     /// <summary>
-    /// Basic interface for every policy to be created.
+    /// Proxy object to an registered type in IoC container.
     /// </summary>
-    public interface ILifeCyclePolicy
+    public interface IReferencedObject
     {
         /// <summary>
-        /// Get value of object that is constructed with this policy and also will be tracked
-        /// by this policy(in case of IDisposable object).
+        /// Wire some interface or class with already registered type.
         /// </summary>
-        /// <param name="registryAccessorService">Registry of registered types.</param>
-        /// <param name="activationService">Service to activate object.</param>
-        /// <param name="type">Type of object.</param>
-        /// <returns>Resulting value of object.</returns>
-        /// <see cref="IRegistryAccessorService"/>
-        /// <see cref="IActivationService"/>
-        /// <seealso cref="IRegisteredObject"/>
-        [NotNull] object Get(
-            [NotNull] IRegistryAccessorService registryAccessorService,
-            [NotNull] IActivationService activationService, 
-            [NotNull] Type type);
+        /// <typeparam name="TInterface">Type if interface to be wired</typeparam>
+        /// <returns>Referenced object of primary object.</returns>
+        /// <see cref="IReferencedObject"/>
+        IReferencedObject AutoWire<TInterface>();
     }
 }

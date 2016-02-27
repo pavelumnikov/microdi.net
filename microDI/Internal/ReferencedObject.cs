@@ -23,30 +23,29 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 // OTHER DEALINGS IN THE SOFTWARE.
 
-using System;
 using JetBrains.Annotations;
+using microDI.Internal.Assert;
 
-namespace microDI
+namespace microDI.Internal
 {
-    /// <summary>
-    /// Basic interface for every policy to be created.
-    /// </summary>
-    public interface ILifeCyclePolicy
+    internal class ReferencedObject : IReferencedObject
     {
-        /// <summary>
-        /// Get value of object that is constructed with this policy and also will be tracked
-        /// by this policy(in case of IDisposable object).
-        /// </summary>
-        /// <param name="registryAccessorService">Registry of registered types.</param>
-        /// <param name="activationService">Service to activate object.</param>
-        /// <param name="type">Type of object.</param>
-        /// <returns>Resulting value of object.</returns>
-        /// <see cref="IRegistryAccessorService"/>
-        /// <see cref="IActivationService"/>
-        /// <seealso cref="IRegisteredObject"/>
-        [NotNull] object Get(
-            [NotNull] IRegistryAccessorService registryAccessorService,
-            [NotNull] IActivationService activationService, 
-            [NotNull] Type type);
+        private readonly IRegisteredObject _registeredObject;
+        private readonly IObjectRegistryService _registryService;
+
+        public ReferencedObject(
+            [NotNull] IRegisteredObject registeredObject, 
+            [NotNull] IObjectRegistryService registryService)
+        {
+            _registeredObject = RuntimeCheck.NotNull(registeredObject, nameof(registeredObject));
+            _registryService = RuntimeCheck.NotNull(registryService, nameof(registryService));
+        }
+
+        public IReferencedObject AutoWire<TInterface>()
+        {
+            var registerType = typeof (TInterface);
+            _registryService.Register(registerType, new AutoWireRegisteredObject(registerType, _registeredObject));
+            return this;
+        }
     }
 }
