@@ -68,20 +68,54 @@ container.RegisterAs<IMyInterface, MyInterfaceImplementation>(
     new TransientLifeCyclePolicy());
 ```
 
+Also there is an auto-wiring addition that could help in situations, where you have implementation with N-interfaces. Such one of interfaces is also wanted to be resolved, but using it's already registered implementation without duplicating information inside container. Here is small example of such feature:
+```cs
+// IFirstInterface.cs
+interface IFirstInterface {};
+
+// ISecondInterface.cs
+interface ISecondInterface {};
+
+// ImplementorOfTwoInterfaces.cs
+class ImplementorOfTwoInterfaces: IFirstInterface, ISecondInterface {}
+
+// Registering implementor in your entry point
+container.RegisterAs<IFirstInterface, ImplementorOfTwoInterfaces>(new TransientLifeCyclePolicy()).AutoWire<ISecondInterface>();
+
+// Resolve them elsewhere
+
+// Primary resolve, by using information of registered type
+var first = container.Resolve<IFirstInterface>();
+
+// Secondary resolve by referencing auto-wired type to primary.
+var second = container.Resolve<ISecondInterface>();
+```
+
+Also, you can set auto-wire lately, by accessing type-object information that is stored in container's registry service:
+```cs
+// All interfaces and class are same as in previous auto-wire example
+
+// Registering implementor in your entry point
+container.RegisterAs<IFirstInterface, ImplementorOfTwoInterfaces>(new TransientLifeCyclePolicy());
+
+// Lately call GetReferencedType method to access publically available internal state of type-object and auto-wire with ISecondInterface
+container.GetReferencedType<IFirstInterface>().AutoWire<ISecondInterface>();
+```
+
 Customizations of life cycle policies is another feature. All implementations must be inherited from *ILifeCyclePolicy* interface. Here is small example of implementation singleton that is used in the library:
 ```cs
 class SingletonLifeCyclePolicy : ILifeCyclePolicy
 {
     private object _value;
 
-    public object Get(IActivationFactory activationFactory, RegisteredType registeredType)
+    public object Get(IRegistryAccessorService registryAccessorService, IActivationService activationService, Type type)
     {
         object result;
 
         if (_value != null)
             result = _value;
         else
-            result = _value = activationFactory.GetInstance(registeredType);
+            result = _value = activationService.GetInstance(registryAccessorService.GetRegisteredObject(type));
 
         return result;
     }
