@@ -28,7 +28,7 @@ using JetBrains.Annotations;
 
 namespace microDI.Internal
 {
-    internal class RegisteredObject : IRegisteredObject
+    internal class RegisteredObject : IInternalRegisteredObject
     {
         public Type Type { get; }
 
