@@ -47,5 +47,10 @@ namespace microDI.Internal
             _registryService.Register(registerType, new AutoWireRegisteredObject(registerType, _registeredObject));
             return this;
         }
+
+        public IReferencedObject ForInternalUse()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

@@ -37,5 +37,12 @@ namespace microDI
         /// <returns>Referenced object of primary object.</returns>
         /// <see cref="IReferencedObject"/>
         IReferencedObject AutoWire<TInterface>();
+
+        /// <summary>
+        /// Marks registered type-object for internal uses, so selected one will be
+        /// accessible by internal activator.
+        /// </summary>
+        /// <returns>Referenced object of primary object.</returns>
+        IReferencedObject ForInternalUse();
     }
 }
