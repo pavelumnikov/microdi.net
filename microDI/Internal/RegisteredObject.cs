@@ -33,6 +33,7 @@ namespace microDI.Internal
         public Type Type { get; }
 
         public ILifeCyclePolicy LifeCycle { get; }
+        public bool IsInternal { get; private set; }
         public Func<IContainer, object> OverridenInstanceCreatorFunction { get; }
         public bool HasCustomizedCreatorFunction => OverridenInstanceCreatorFunction != null;
 
@@ -44,6 +45,11 @@ namespace microDI.Internal
             OverridenInstanceCreatorFunction = createInstanceFunc;
             Type = registedType;
             LifeCycle = lifeCycle;
+        }
+
+        public void AsInternalInjection()
+        {
+            IsInternal = true;
         }
     }
 }

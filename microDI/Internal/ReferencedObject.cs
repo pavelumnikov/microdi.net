@@ -25,6 +25,7 @@
 
 using JetBrains.Annotations;
 using microDI.Internal.Assert;
+using microDI.Internal.Extensions;
 
 namespace microDI.Internal
 {
@@ -50,7 +51,10 @@ namespace microDI.Internal
 
         public IReferencedObject ForInternalUse()
         {
-            throw new System.NotImplementedException();
+            var internalRegisteredObject = _registeredObject.AsInternal();
+            internalRegisteredObject.AsInternalInjection();
+
+            return this;
         }
     }
 }

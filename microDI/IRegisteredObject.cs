@@ -36,5 +36,11 @@ namespace microDI
         /// </summary>
         /// <see cref="ILifeCyclePolicy"/>
         ILifeCyclePolicy LifeCycle { get; }
+
+        /// <summary>
+        /// Shows if this type-object is available only for internal
+        /// dependency injection that will be done by IoC on every resolve.
+        /// </summary>
+        bool IsInternal { get; }
     }
 }
