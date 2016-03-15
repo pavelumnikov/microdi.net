@@ -3,3 +3,4 @@ microDI/obj/
 packages/
 Tests/microDI.UnitTests/bin/
 Tests/microDI.UnitTests/obj/
+.vs/
