@@ -37,8 +37,9 @@ namespace microDI
         /// Creates new instance of type from registered type in IoC.
         /// </summary>
         /// <param name="registeredObject">Instance of sidecar for registered type.</param>
+        /// <param name="isExternal">Ensures if we are trying to get object for external or internal use.</param>
         /// <returns>New instance of an typed object.</returns>
         /// <see cref="IRegisteredObject"/>
-        object GetInstance([NotNull] IRegisteredObject registeredObject);
+        object GetInstance([NotNull] IRegisteredObject registeredObject, bool isExternal = false);
     }
 }

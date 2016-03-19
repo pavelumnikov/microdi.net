@@ -77,7 +77,7 @@ namespace microDI
 
         public object Resolve(Type resolveType)
         {
-            return _activationService.GetInstance(_registryService.GetRegisteredObject(resolveType));
+            return _activationService.GetInstance(_registryService.GetRegisteredObject(resolveType), true);
         }
 
         public TInterface Resolve<TInterface>()

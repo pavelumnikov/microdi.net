@@ -31,5 +31,6 @@ namespace microDI.Internal
     {
         Func<IContainer, object> OverridenInstanceCreatorFunction { get; }
         bool HasCustomizedCreatorFunction { get; }
+        void AsInternalInjection();
     }
 }

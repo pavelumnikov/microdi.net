@@ -25,6 +25,7 @@
 
 using JetBrains.Annotations;
 using microDI.Internal.Assert;
+using microDI.Internal.Extensions;
 
 namespace microDI.Internal
 {
@@ -44,6 +45,14 @@ namespace microDI.Internal
         public IReferencedObject AutoWire<TInterface>()
         {
             _registryService.Register(typeof(TInterface), new AutoWireRegisteredObject(_registeredObject));
+
+            return this;
+        }
+
+        public IReferencedObject ForInternalUse()
+        {
+            var internalRegisteredObject = _registeredObject.AsInternal();
+            internalRegisteredObject.AsInternalInjection();
 
             return this;
         }

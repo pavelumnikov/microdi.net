@@ -36,6 +36,7 @@ namespace microDI.Internal
 
         public Type Type => _registeredObject.Type;
         public ILifeCyclePolicy LifeCycle => _registeredObject.LifeCycle;
+        public bool IsInternal { get; private set; }
 
         public Func<IContainer, object> OverridenInstanceCreatorFunction
             => _registeredObject.OverridenInstanceCreatorFunction;
@@ -45,6 +46,11 @@ namespace microDI.Internal
         public AutoWireRegisteredObject([NotNull] IRegisteredObject registeredObject)
         {
             _registeredObject = RuntimeCheck.NotNull(registeredObject, nameof(registeredObject)).AsInternal();
+        }
+
+        public void AsInternalInjection()
+        {
+            IsInternal = true;
         }
     }
 }

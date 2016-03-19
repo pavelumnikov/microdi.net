@@ -52,6 +52,7 @@
     <Compile Include="Configurations\SimpleClassAndTwoInterfaces\SimpleClassImplementsTwoInterfaces.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tests\AutoWireTests.cs" />
+    <Compile Include="Tests\ForInternalUseTest.cs" />
     <Compile Include="Tests\ResolveTests.cs" />
     <Compile Include="Tests\RegisterTests.cs" />
   </ItemGroup>
