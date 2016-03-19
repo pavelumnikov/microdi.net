@@ -34,7 +34,7 @@ namespace microDI.Internal
     {
         private readonly IInternalRegisteredObject _registeredObject;
 
-        public Type Type { get; }
+        public Type Type => _registeredObject.Type;
         public ILifeCyclePolicy LifeCycle => _registeredObject.LifeCycle;
 
         public Func<IContainer, object> OverridenInstanceCreatorFunction
@@ -42,9 +42,8 @@ namespace microDI.Internal
 
         public bool HasCustomizedCreatorFunction => _registeredObject.HasCustomizedCreatorFunction;
 
-        public AutoWireRegisteredObject([NotNull] Type type, [NotNull] IRegisteredObject registeredObject)
+        public AutoWireRegisteredObject([NotNull] IRegisteredObject registeredObject)
         {
-            Type = RuntimeCheck.NotNull(type, nameof(type));
             _registeredObject = RuntimeCheck.NotNull(registeredObject, nameof(registeredObject)).AsInternal();
         }
     }
