@@ -15,5 +15,18 @@ namespace microDI.UnitTests.Tests
             Assert.DoesNotThrow(() => container.RegisterAs<IFirstInterface, SimpleClassImplementsTwoInterfaces>(
                 new TransientLifeCyclePolicy()).AutoWire<ISecondInterface>());
         }
+
+        [Test]
+        public void RegisterAndResolve_WithAutoWire_TwoInterfacesWithImplementor_AutoWireWithRegistered()
+        {
+            var container = new Container();
+
+            Assert.DoesNotThrow(() => container.RegisterAs<IFirstInterface, SimpleClassImplementsTwoInterfaces>(
+                new TransientLifeCyclePolicy()).AutoWire<ISecondInterface>());
+
+            Assert.DoesNotThrow(() => container.Resolve<IFirstInterface>());
+
+            Assert.DoesNotThrow(() => container.Resolve<ISecondInterface>());
+        }
     }
 }
