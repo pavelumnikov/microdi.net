@@ -42,7 +42,7 @@ namespace microDI.Internal.Services
             _container = RuntimeCheck.NotNull(container, nameof(container));
         }
 
-        public object GetInstance(IRegisteredObject registeredObject)
+        public object GetInstance(IRegisteredObject registeredObject, bool isExternal = false)
         {
             var internalRegisteredObject = RuntimeCheck.NotNull(registeredObject, nameof(registeredObject)).AsInternal();
 
@@ -51,6 +51,9 @@ namespace microDI.Internal.Services
 
             try
             {
+                if (internalRegisteredObject.IsInternal && isExternal)
+                    throw new OnlyForInternalUseException(type);
+
                 result = internalRegisteredObject.HasCustomizedCreatorFunction
                     ? internalRegisteredObject.OverridenInstanceCreatorFunction(_container)
                     : DefaultInstanceCreator(_container, type);

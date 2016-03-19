@@ -36,6 +36,7 @@
   <ItemGroup>
     <Compile Include="Container.cs" />
     <Compile Include="Exceptions\ActivationException.cs" />
+    <Compile Include="Exceptions\OnlyForInternalUseException.cs" />
     <Compile Include="Exceptions\TypeAlreadyRegisteredException.cs" />
     <Compile Include="Exceptions\TypeNotRegisteredException.cs" />
     <Compile Include="IActivationService.cs" />
