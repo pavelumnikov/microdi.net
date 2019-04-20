@@ -4,6 +4,7 @@ using microDI.Exceptions;
 using microDI.LifeCycle;
 using microDI.UnitTests.NetCore.Configurations.SimpleClassAndInterface;
 using microDI.UnitTests.NetCore.Configurations.SimpleClassAndTwoInterfaces;
+using microDI.UnitTests.NetCore.Configurations.TwoSimpleClassesAndTwoInterfaces;
 using Xunit;
 
 namespace microDI.UnitTests.NetCore.Tests
@@ -42,6 +43,34 @@ namespace microDI.UnitTests.NetCore.Tests
             registerInterfaceAction.Should().NotThrow();
             resolveInterfaceAction.Should().Throw<ActivationException>()
                 .WithInnerException<OnlyForInternalUseException>();
+        }
+
+        [Fact]
+        public void RegisterAndResolve_ClassDependencyOnInterface_DependencyOnlyForInternalUse()
+        {
+            var container = new Container();
+
+            Action registerFirstInterfaceAction =
+                () => container.RegisterAs<IFirstIndependentInterface, ImplementorOfFirstInterface>(
+                    new SingletonLifeCyclePolicy()).ForInternalUse();
+
+            Action registerSecondInterfaceAction =
+                () => container.RegisterAs<ISecondIndependentInterface, ImplementorOfSecondInterface>(
+                    new SingletonLifeCyclePolicy());
+
+            Action resolveFirstInterfaceAction =
+                () => container.Resolve<IFirstIndependentInterface>();
+
+            Action resolveSecondInterfaceAction =
+                () => container.Resolve<ISecondIndependentInterface>();
+
+            registerFirstInterfaceAction.Should().NotThrow();
+            registerSecondInterfaceAction.Should().NotThrow();
+
+            resolveFirstInterfaceAction.Should().Throw<ActivationException>()
+                .WithInnerException<OnlyForInternalUseException>();
+
+            resolveSecondInterfaceAction.Should().NotThrow<ActivationException>();
         }
     }
 }
