@@ -34,9 +34,8 @@ namespace microDI.Internal.Extensions
             if(source == null)
                 throw new ArgumentNullException(nameof(source));
 
-            var result = source as IInternalRegisteredObject;
-            if(result == null)
-                throw new InvalidCastException("Cannot cast IRegisteredObject as internal reprentation!");
+            if(!(source is IInternalRegisteredObject result))
+                throw new InvalidCastException("Cannot cast IRegisteredObject as internal representation!");
 
             return result;
         }

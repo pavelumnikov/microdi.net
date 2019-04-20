@@ -29,7 +29,7 @@ using JetBrains.Annotations;
 namespace microDI
 {
     /// <summary>
-    /// Interface of IoC constainer.
+    /// Interface of IoC container.
     /// </summary>
     public interface IContainer
     {

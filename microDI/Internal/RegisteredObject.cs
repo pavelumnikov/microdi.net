@@ -39,11 +39,11 @@ namespace microDI.Internal
 
         public RegisteredObject(
             [CanBeNull] Func<IContainer, object> createInstanceFunc,
-            [NotNull] Type registedType,
+            [NotNull] Type registeredType,
             [NotNull] ILifeCyclePolicy lifeCycle)
         {
             OverridenInstanceCreatorFunction = createInstanceFunc;
-            Type = registedType;
+            Type = registeredType;
             LifeCycle = lifeCycle;
         }
 

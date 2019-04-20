@@ -89,7 +89,7 @@ namespace microDI.Internal.Assert
             [AssertionCondition(AssertionConditionType.IsNull), NotNull] Func<T, bool> prediction,
             [InvokerParameterName, NotNull] string paramName)
         {
-            NotNull(prediction, "prediction");
+            NotNull(prediction, nameof(prediction));
 
             if (prediction.Invoke(value))
                 return value;
@@ -106,7 +106,7 @@ namespace microDI.Internal.Assert
         public static void Expression(
             [AssertionCondition(AssertionConditionType.IsNull), NotNull] Func<bool> prediction)
         {
-            NotNull(prediction, "prediction");
+            NotNull(prediction, nameof(prediction));
 
             if (!prediction.Invoke())
                 throw new Exception("prediction is not true!");

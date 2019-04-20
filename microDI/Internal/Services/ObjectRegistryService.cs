@@ -31,12 +31,12 @@ namespace microDI.Internal.Services
 {
     internal class ObjectRegistryService : IObjectRegistryService
     {
-        private readonly ConcurrentDictionary<Type, IRegisteredObject> _typeRegistery =
+        private readonly ConcurrentDictionary<Type, IRegisteredObject> _typeRegistry =
             new ConcurrentDictionary<Type, IRegisteredObject>();
 
         public IReferencedObject Register(Type type, IRegisteredObject registeredObjectEntry)
         {
-            if (!_typeRegistery.TryAdd(type, registeredObjectEntry))
+            if (!_typeRegistry.TryAdd(type, registeredObjectEntry))
                 throw new TypeAlreadyRegisteredException(type);
 
             return new ReferencedObject(registeredObjectEntry, this);
@@ -44,9 +44,7 @@ namespace microDI.Internal.Services
 
         public IRegisteredObject GetRegisteredObject(Type type)
         {
-            IRegisteredObject registeredObject;
-
-            if (!_typeRegistery.TryGetValue(type, out registeredObject))
+            if (!_typeRegistry.TryGetValue(type, out var registeredObject))
                 throw new TypeNotRegisteredException(type);
 
             return registeredObject;
