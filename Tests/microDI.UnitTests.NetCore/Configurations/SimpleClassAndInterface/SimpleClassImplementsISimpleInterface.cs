@@ -1,4 +1,4 @@
-﻿namespace microDI.UnitTests.Configurations.SimpleClassAndInterface
+﻿namespace microDI.UnitTests.NetCore.Configurations.SimpleClassAndInterface
 {
     class SimpleClassImplementsISimpleInterface : ISimpleInterface
     {

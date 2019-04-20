@@ -1,4 +1,4 @@
-﻿namespace microDI.UnitTests.Configurations.SimpleClassAndTwoInterfaces
+﻿namespace microDI.UnitTests.NetCore.Configurations.SimpleClassAndTwoInterfaces
 {
     class SimpleClassImplementsTwoInterfaces : IFirstInterface, ISecondInterface
     {
