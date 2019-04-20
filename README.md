@@ -4,7 +4,7 @@ Tiny dependency injection container for small applications.
 
 ## Current build Status
 
-[![Build status](https://ci.appveyor.com/api/projects/status/jwvapw9wrhs6w85e?retina=true)](https://ci.appveyor.com/project/pavel-xrayz13/microdi-net)
+[![Build status](https://ci.appveyor.com/api/projects/status/mpm8grel7w9gng3w?retina=true)](https://ci.appveyor.com/project/pavel-xrayz13/microdi-net-0spbd)
 
 ### What? Another IoC container? ###
 
@@ -101,6 +101,45 @@ container.RegisterAs<IFirstInterface, ImplementorOfTwoInterfaces>(new TransientL
 // Lately call GetReferencedType method to access publically available internal state of type-object and auto-wire with ISecondInterface
 container.GetReferencedType<IFirstInterface>().AutoWire<ISecondInterface>();
 ```
+
+Not only interface auto-wiring is a special feature. There is another option to use interfaces: make them only accessible by the IoC container when resolving. When you try to resolve such interface manually, you'll get ActivationException with inner OnlyForInternalUseException type of exception. Simple use case:
+```cs
+// IFirstInterface.cs
+interface IFirstInterface {};
+
+// Registering implementor in your entry point and make it usable only from IoC internal calls
+container.RegisterAs<IFirstInterface, ImplementorOfTwoInterfaces>(new TransientLifeCyclePolicy()).ForInternalUse();
+```
+
+More complex use case example:
+```cs
+// IFirstInterface.cs
+interface IFirstInterface {};
+
+// ISecondInterface.cs
+interface ISecondInterface {};
+
+// ImplementorOfFirstInterface.cs
+class ImplementorOfFirstInterface: IFirstInterface {}
+
+// ImplementorOfSecondInterface.cs
+class ImplementorOfSecondInterface : ISecondInterface
+{
+		public ImplementorOfSecondInterface(IFirstInterface firstInterface)
+        {}
+}
+
+// Registering first implementor in your entry point
+container.RegisterAs<IFirstInterface, ImplementorOfFirstInterface>(new TransientLifeCyclePolicy()).ForInternalUse();
+
+// Registering second implementor in your entry point
+container.RegisterAs<ISecondInterface, ImplementorOfSecondInterface>(new TransientLifeCyclePolicy()).ForInternalUse();
+
+// Resolve second interface elsewhere
+
+// Second interface will be resolved by injecting new instance of IFirstInterface implementation in consructor
+var secondInterface = container.Resolve<ISecondInterface>();
+``` 
 
 Customizations of life cycle policies is another feature. All implementations must be inherited from *ILifeCyclePolicy* interface. Here is small example of implementation singleton that is used in the library:
 ```cs
