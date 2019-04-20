@@ -36,10 +36,15 @@ namespace microDI.Internal.Services
     internal class ActivationService : IActivationService
     {
         private readonly IContainer _container;
+        private readonly IRegistryAccessorService _registryAccessorService;
 
-        public ActivationService([NotNull] IContainer container)
+        public ActivationService([NotNull] IContainer container, 
+            [NotNull] IRegistryAccessorService registryAccessorService)
         {
             _container = RuntimeCheck.NotNull(container, nameof(container));
+
+            _registryAccessorService = RuntimeCheck.NotNull(
+                registryAccessorService, nameof(registryAccessorService));
         }
 
         public object GetInstance(IRegisteredObject registeredObject, bool isExternal = false)
@@ -71,7 +76,8 @@ namespace microDI.Internal.Services
             RuntimeCheck.NotNull(type, nameof(type));
 
             var constructor = type.GetTypeInfo().DeclaredConstructors.Single();
-            var arguments = constructor.GetParameters().Select(p => container.Resolve(p.ParameterType)).ToArray();
+            var arguments = constructor.GetParameters()
+                .Select(p => GetInstance(_registryAccessorService.GetRegisteredObject(p.ParameterType))).ToArray();
 
             return Activator.CreateInstance(type, arguments);
         }

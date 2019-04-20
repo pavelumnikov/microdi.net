@@ -38,7 +38,7 @@ namespace microDI
         public Container()
         {
             _registryService = new ObjectRegistryService();
-            _activationService = new ActivationService(this);
+            _activationService = new ActivationService(this, _registryService);
         }
 
         public IReferencedObject RegisterAs<TInterface, TImplementation>(ILifeCyclePolicy lifeCycle)
