@@ -63,6 +63,16 @@ namespace microDI
                     c => instanceCreatorFunc(c), typeof(TImplementation), lifeCycle));
         }
 
+        public IReferencedObject Register<TClass>(ILifeCyclePolicy lifeCycle)
+        {
+            RuntimeCheck.NotNull(lifeCycle, nameof(lifeCycle));
+
+            var registeringType = typeof(TClass);
+
+            return _registryService.Register(
+                registeringType, new RegisteredObject(null, registeringType, lifeCycle));
+        }
+
         public IReferencedObject Register<TClass>(
             Func<IContainer, TClass> instanceCreatorFunc, ILifeCyclePolicy lifeCycle)
         {
@@ -82,7 +92,7 @@ namespace microDI
 
         public TInterface Resolve<TInterface>()
         {
-            return (TInterface)Resolve(typeof(TInterface));
+            return (TInterface) Resolve(typeof(TInterface));
         }
 
         public IReferencedObject GetReferencedType<TClass>()

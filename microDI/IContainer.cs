@@ -42,7 +42,8 @@ namespace microDI
         /// <param name="lifeCycle">Life cycle of registered type.</param>
         /// <see cref="IReferencedObject"/>
         /// <see cref="ILifeCyclePolicy"/>
-        [NotNull] IReferencedObject RegisterAs<TInterface, TImplementation>([NotNull] ILifeCyclePolicy lifeCycle)
+        [NotNull] IReferencedObject RegisterAs<TInterface, TImplementation>(
+			[NotNull] ILifeCyclePolicy lifeCycle)
             where TImplementation : TInterface;
 
         /// <summary>
@@ -58,6 +59,16 @@ namespace microDI
             [NotNull] Func<IContainer, TImplementation> instanceCreatorFunc,
             [NotNull] ILifeCyclePolicy lifeCycle)
             where TImplementation : TInterface;
+
+		/// <summary>
+        /// Register class and creator function to be used for instantiation with life
+        /// cycle.
+        /// </summary>
+        /// <typeparam name="TClass">Type of class to be registered</typeparam>
+        /// <param name="lifeCycle">Life cycle of registered type.</param>
+        /// <see cref="IReferencedObject"/>
+        /// <see cref="ILifeCyclePolicy"/>
+        [NotNull] IReferencedObject Register<TClass>([NotNull] ILifeCyclePolicy lifeCycle);
 
         /// <summary>
         /// Register class and creator function to be used for instantiation with life
