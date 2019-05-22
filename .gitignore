@@ -1,6 +1,4 @@
-microDI/bin/
-microDI/obj/
-packages/
-Tests/microDI.UnitTests/bin/
-Tests/microDI.UnitTests/obj/
+*/**/bin/
+*/**/obj/
 .vs/
+*.sln.DotSettings.user
